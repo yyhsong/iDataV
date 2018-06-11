@@ -270,6 +270,13 @@
 				}
 				//渲染图表
 				bar2D.setOption(barOpt2);
+				
+				/********** 浏览器窗口改变时，重置报表大小 ****************/
+				window.onresize = function() {
+					bar3D.resize();
+					globe3D.resize();
+					bar2D.resize();
+				}
 			});
 		</script>
 	</body>
