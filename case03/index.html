@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+	    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+		<title>热力图展示</title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/app.css" />
+	</head>
+	
+	<body class="bg02">
+		<header class="header">
+			<h3>热力图展示</h3>
+		</header>
+		
+		<div class="wrapper">
+			<div class="container-fluid">
+				<div class="row fill-h">
+					<div class="col-lg-7 fill-h">
+						<div class="xpanel-wrapper xpanel-wrapper-1">
+							<div class="xpanel">
+								<div class="fill-h" id="bmapChart"></div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-5 fill-h">
+						<div class="xpanel-wrapper xpanel-wrapper-2">
+							<div class="xpanel">
+								<div class="fill-h" id="heatmapChart"></div>
+							</div>
+						</div>
+						<div class="xpanel-wrapper xpanel-wrapper-2">
+							<div class="xpanel">
+								<div class="fill-h" id="coordChart"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+		<script type="text/javascript" src="js/echarts-3.8.5.min.js"></script>
+		<script type="text/javascript" src="js/echarts-bmap.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				/*************** 基于百度地图的热力图 **************/
+				//初始化echarts实例
+				const bmapChart= echarts.init(document.getElementById("bmapChart"));
+				//配置
+				const bmapOpt = {
+					animation: false,
+			        bmap: {
+			            center: [120.13066322374, 30.240018034923],
+			            zoom: 14,
+			            roam: true
+			        },
+			        visualMap: {
+			        	show: false,
+			            bottom: 45,
+			            calculable: true,
+			            seriesIndex: 0,
+			            min: 0,
+			            max: 5,
+			            inRange: {
+			                color: ['green', 'yellow', 'red']
+			            }
+			        },
+			        series: [{
+			            type: 'heatmap',
+			            coordinateSystem: 'bmap', //基于百度地图
+			            pointSize: 5,
+			            blurSize: 6
+			        }]
+				};
+				bmapChart.setOption(bmapOpt);
+				$.getJSON('data/bmap.json').done(function(data) {
+					bmapChart.setOption({
+						series: [{
+							data: data
+						}]
+					});
+					//添加百度地图插件
+        			let bmap = bmapChart.getModel().getComponent('bmap').getBMap();
+        			bmap.addControl(new BMap.MapTypeControl());
+				});
+				
+				/*************** 笛卡尔坐标系上的热力图 **************/
+				//初始化echarts实例
+				const coordChart= echarts.init(document.getElementById("coordChart"));
+				//数据
+				const hours = ['12a', '0a', '1a', '2a', '3a', '4a', '5a', '6a', '7a', '8a', '9a', '10a', '11a', '12p',
+					'1p', '2p', '3p', '4p', '5p', '6p', '7p', '8p', '9p', '10p', '11p'];
+				const days = ['Sat', 'Fri', 'Thu', 'Wed', 'Tue', 'Mon'];
+				//配置
+				const coordOpt = {
+					tooltip: {
+				        position: 'top'
+				   },
+				    grid: {
+				        top: 0,
+				        bottom: 25,
+				        left: 100,
+				        right: 10,
+				    },
+				    xAxis: {
+				        type: 'category',
+				        data: hours,
+				        splitArea: {
+				            show: true
+				        }
+				    },
+				    yAxis: {
+				        type: 'category',
+				        data: days,
+				        splitArea: {
+				            show: true
+				        }
+				    },
+				    axisLabel: {
+				    	color: '#fff'
+				    },
+				    visualMap: {
+				        min: 0,
+				        max: 10,
+				        calculable: true,
+				        left: 'left',
+				        bottom: 20,
+				        itemWidth: 10,
+				        itemHeight: 80,
+				        textStyle: {
+				        	color: '#fff'
+				        }
+				    },
+				    series: [{
+				        name: 'Coord Heatmap',
+				        type: 'heatmap',
+				        label: {
+				            normal: {
+				                show: true
+				            }
+				        },
+				        itemStyle: {
+				            emphasis: {
+				                shadowBlur: 10,
+				                shadowColor: 'rgba(0, 0, 0, 0.5)'
+				            }
+				        }
+				    }] 
+				};
+				//渲染图表
+				coordChart.setOption(coordOpt)
+				$.getJSON('data/coord.json').done(function(data) {
+					let coordData = data.map(function(item) {
+						return [item[1], item[0], item[2] || '-'];
+					});
+					coordChart.setOption({
+						series: [{
+							name: 'Coord Heatmap',
+							data: coordData
+						}]
+					});
+				});
+				
+				/******************* 热力图 **********************/
+				//初始化echarts实例
+				const heatmapChart = echarts.init(document.getElementById("heatmapChart"));
+				//heatmapChart.showLoading();
+				//数据
+				const heatmapXData = [];
+				const heatmapYData = [];
+				for(let i=0;i<=200;i++) {
+					heatmapXData.push(i);
+					if(i<100) {
+						heatmapYData.push(i);
+					}
+				}
+				//配置
+				const heatmapOpt = {
+					tooltip: {},
+				    grid: {
+				    	top: 10,
+				    	bottom: 25,
+				    	left: 150,
+				        right: 10,
+				        backgroundColor: '#f00'
+				    },
+				    xAxis: {
+				        type: 'category',
+				        data: heatmapXData
+				    },
+				    yAxis: {
+				        type: 'category',
+				        data: heatmapYData
+				    },
+				    axisLabel: {
+			        	color: '#fff'
+			        },
+				    visualMap: {
+				        type: 'piecewise', //分段型
+				        top: 0,
+				        left: 0,
+				        calculable: true,
+				        realtime: false, //拖拽时，是否实时更新
+				        min: 0,
+				        max: 1,
+				        splitNumber: 8,
+				        textStyle: {
+				        	color: '#fff'
+				        },
+				        inRange: {
+				            color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+				        }
+				    },
+				    series: [{
+				        name: 'Heatmap',
+				        type: 'heatmap',
+				        progressive: 1000,
+				        animation: false,
+				        itemStyle: {
+				            emphasis: {
+				                borderColor: '#333',
+				                borderWidth: 1
+				            }
+				        }
+				    }]
+				};
+				//渲染图表
+				heatmapChart.setOption(heatmapOpt);
+				$.getJSON('data/heatmap.json').done(function(data) {
+					//heatmapChart.hideLoading();
+					heatmapChart.setOption({
+						series: [{
+							name: 'Heatmap',
+							data: data
+						}]
+					});
+				});
+				
+				/********** 窗口大小改变时，重置报表大小 ********************/
+				window.onresize = function() {
+					bmapChart.resize();
+					heatmapChart.resize();
+					coordChart.resize();
+				};
+			});
+		</script>
+	</body>
+</html>
