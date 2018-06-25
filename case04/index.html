@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+	    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+		<title>ECharts扩展示例</title>
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/app.css" />
+	</head>
+	
+	<body class="bg06">
+		<header class="header">
+			<h3>ECharts扩展示例</h3>
+		</header>
+		
+		<div class="wrapper">
+			<div class="container-fluid">
+				<div class="row fill-h">
+					<div class="col-lg-3 fill-h">
+						<div class="xpanel-wrapper xpanel-wrapper-1-2">
+							<div class="xpanel">
+								<div class="fill-h" id="wordChart"></div>
+							</div>
+						</div>
+						<div class="xpanel-wrapper xpanel-wrapper-1-2">
+							<div class="xpanel">
+								<div class="fill-h" id="ballChart"></div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6 fill-h">
+						<div class="xpanel-wrapper xpanel-wrapper-1">
+							<div class="xpanel no-padding no-bg">
+								<div class="fill-h" id="fireworksChart"></div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 fill-h">
+						<div class="xpanel-wrapper xpanel-wrapper-2-3">
+							<div class="xpanel">
+								<div class="fill-h" id="relationChart"></div>
+							</div>
+						</div>
+						<div class="xpanel-wrapper xpanel-wrapper-1-3">
+							<div class="xpanel">
+								<div class="fill-h" id="mapChart"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript" src="js/echarts-3.8.5.min.js"></script>
+		<script type="text/javascript" src="js/echarts-wordcloud.min.js"></script>
+		<script type="text/javascript" src="js/echarts-liquidfill.min.js"></script>
+		<script type="text/javascript" src="js/echarts-map-china.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				/*************** 中国地图 **************/
+				//初始化echarts实例
+				const mapChart = echarts.init(document.getElementById("mapChart"));
+				(function() {
+					let data = [
+						{"name": "辽宁", "value": 77},
+						{"name": "吉林", "value": 42},
+						{"name": "黑龙江", "value": 72},
+						{"name": "四川", "value": 81},
+						{"name": "湖北", "value": 47},
+						{"name": "福建", "value": 67},
+						{"name": "深圳", "value": 82},
+						{"name": "广东", "value": 66},
+						{"name": "重庆", "value": 24},
+						{"name": "湖南", "value": 92},
+						{"name": "上海", "value": 95},
+						{"name": "江苏", "value": 91},
+						{"name": "浙江", "value": 94},
+						{"name": "安徽", "value": 64},
+						{"name": "北京", "value": 91},
+						{"name": "天津", "value": 65},
+						{"name": "山东", "value": 98},
+						{"name": "山西", "value": 83},
+						{"name": "河南", "value": 100},
+						{"name": "河北", "value": 70},
+						{"name": "内蒙古", "value": 11},
+						{"name": "江西", "value": 23},
+						{"name": "贵州", "value": 45},
+						{"name": "云南", "value": 36},
+						{"name": "西藏", "value": 9},
+						{"name": "陕西", "value": 21},
+						{"name": "甘肃", "value": 54},
+						{"name": "青海", "value": 48},
+						{"name": "宁夏", "value": 36},
+						{"name": "新疆", "value": 24},
+						{"name": "广西", "value": 68},
+						{"name": "海南", "value": 99},
+						{"name": "台湾", "value": 88}
+					];
+					
+					let opt = {
+						visualMap: {
+					        show: false,
+					        orient: 'horizontal',
+					        left: 'left',
+					        top: 'top',
+					        itemWidth: 5,
+					        calculable: true,
+					        seriesIndex: [0],
+					        inRange: {
+					            color: ['#aed8fe', '#57a1fc', '#3a73b8', '#2B32B2']
+					        }
+					    },
+						geo: {
+							map: 'china',
+					        roam: false, //开启鼠标缩放和漫游
+					        zoom: 1, //地图缩放级别
+							selectedMode: false, //选中模式：single | multiple
+							left: 0,
+							right: 0,
+							top: 0,
+							bottom: 0,
+							layoutCenter: ['50%', '50%'], //设置后left/right/top/bottom等属性无效
+							//layoutSize: '100%', //保持地图宽高比
+					        label: {
+					            emphasis: {
+					                show: true,
+					                textStyle: {
+					                	fontSize: 10,
+					                	color: '#fff'
+					                }
+					            }
+					        }
+						},
+						series: [{
+							type: 'map',
+							geoIndex: 0,
+							data: data
+						}]
+					};
+					mapChart.setOption(opt);
+				})();
+				
+				/*************** 烟花秀 **************/
+				//初始化echarts实例
+				const fireworksChart = echarts.init(document.getElementById("fireworksChart"));
+				(function() {
+					let r = function(max) {
+		                let m = max || 10;
+		                return Math.floor(Math.random() * m);
+		            };
+		
+		            let moonAndStars = {
+		                type: 'graph',
+		                data: (function() {
+		                    let moonPosition = {
+		                        x: 190,
+		                        y: 0.5
+		                    }
+		                    let moon = [{
+		                        symbolSize: 70,
+		                        x: moonPosition.x,
+		                        y: moonPosition.y
+		                    }, {
+		                        symbolSize: 60,
+		                        x: moonPosition.x - 1.5,
+		                        y: moonPosition.y - 1.5,
+		                        itemStyle: {
+		                            normal: {
+		                                color: 'rgb(51, 51, 51)'
+		                            }
+		                        }
+		                    }, {
+		                        symbolSize: 0,
+		                        x: 0,
+		                        y: 0
+		                    }, {
+		                        symbolSize: 0,
+		                        x: 200,
+		                        y: 100
+		                    }];
+		                    let num = 100;
+		                    let stars = [];
+		                    for (let i = 0; i < num; i++) {
+		                        stars.push({
+		                            symbolSize: r(3),
+		                            x: r(200),
+		                            y: r(50)
+		                        })
+		                    }
+		                    return moon.concat(stars);
+		                })(),
+		                itemStyle: {
+		                    normal: {
+		                        color: '#ccc'
+		                    }
+		                },
+		                silent: true,
+		                z: -1
+		            };
+		
+		            let roofs = [
+		                /*三角形*/
+		                [1, 2, 3, 4, 5, 4, 3, 2, 1],
+		                /*凸*/
+		                [2, 2, 2, 4, 4, 4, 2, 2, 2],
+		                [2, 2, 2, 4, 20, 4, 2, 2, 2],
+		                [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
+		                [6, 6, 6, 6, 6, 5, 4, 3, 2, 1],
+		                [0.3, 1, 1.6, 2.5, 3, 3.5, 3.6, 3.7, 3.7, 3.6, 3.5, 3, 2.5, 1.6, 1, 0.3],
+		                [6, 6, 6, 6, 6, 2, 2, 2],
+		                [6, 5.5, 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5],
+		                [1, 1, 1, 1, 1, 1.5, 2, 2.5, 3, 3.5, 4],
+		                [1, 1, 1, 1, 1, 1, 1],
+		                [4, 4, 4, 2, 2, 2, 4, 4, 4]
+		
+		            ];
+		            let build = function(height) {
+		                let arr = [100];
+		                let l = 14;
+		                let h = height || 50;
+		                let addFloor = function(arr, l) {
+		                    let a = [];
+		                    for (let i = 0; i < arr.length; i++) {
+		                        a.push(arr[i] + l);
+		                    }
+		                    return a;
+		                };
+		                for (let i = 0; i < l; i++) {
+		                    let newRoof = addFloor(roofs[r(11)], r(h));
+		                    if (Math.random() < .5) {
+		                        newRoof.reverse()
+		                    }
+		                    arr = arr.concat(newRoof);
+		                    if (Math.random() < .5) {
+		                        arr.push(0)
+		                    }
+		                }
+		                return arr;
+		            };
+		            let building = build();
+		            let building2 = (function() {
+		                let b = build(100);
+		                for(let i = 0; i < b.length; i++) {
+		                    if(b[i] > building[i]) {
+		                        b[i] = b[i] - building[i];
+		                    }
+		                }
+		                return b;
+		            })()
+		
+		            option = {
+		                title: {
+		                    text: '',
+		                    top: 20,
+		                    left: 'center',
+		                    textStyle: {
+		                        fontSize: 20,
+		                        color: '#fff',
+		                        fontWeight: 'bold'
+		                    }
+		                },
+		                stack: true,
+		                grid: {
+		                    bottom: 0,
+		                    top: 0,
+		                    left: -10,
+		                    right: -10
+		                },
+		                xAxis: {
+		                    data: [],
+		                    silent: true,
+		                    splitLine: {
+		                        show: false
+		                    },
+		                    axisLine: {
+		                        show: false
+		                    }
+		                },
+		                yAxis: {
+		                    silent: true,
+		                    splitLine: {
+		                        show: false
+		                    },
+		                    axisLine: {
+		                        show: false
+		                    },
+		                    axisTick: {
+		                        show: false
+		                    },
+		                    axisLabel: {
+		                        show: false
+		                    }
+		                },
+		                series: [{
+		                    type: 'bar',
+		                    data: building,
+		                    itemStyle: {
+		                        normal: {
+		                            color: 'rgb(38, 41, 57)'
+		                        }
+		                    },
+		                    animationDelay: function(idx) {
+		                        return idx * 10;
+		                    }
+		                }, {
+		                    type: 'bar',
+		                    data: building2,
+		                    itemStyle: {
+		                        normal: {
+		                            color: 'rgb(28, 31, 47)'
+		                        }
+		                    },
+		                    animationDelay: function(idx) {
+		                        return idx * 10 + 300;
+		                    }
+		                }, {
+		                    coordinateSystem: 'cartesian2d',
+		                    type: 'lines',
+		                    zlevel: 2,
+		                    symbolSize: 3,
+		                    effect: {
+		                        show: true,
+		                        period: 1,
+		                        trailLength: 0.01,
+		                        symbolSize: 5,
+		                        symbol: 'pin',
+		                        loop: true
+		                    },
+		                    lineStyle: {
+		                        normal: {
+		                            color: '#BF3EFF',
+		                            opacity: 0.005,
+		                            //curveness: -0.05,
+		                            width: 0.01,
+		                            //opacity: 0.6,
+		                            curveness: 0.1
+		                        }
+		                    },
+		                    data: [{
+		                        coords: [ // 竖直向上
+		                            [40, 166],
+		                            [40, 210]
+		                        ]
+		                    }, { // 水平向右
+		                        coords: [
+		                            [41, 165],
+		                            [65, 165]
+		
+		                        ]
+		                    }, { // 水平向左
+		                        coords: [
+		                            [39, 165],
+		                            [15, 165]
+		                        ]
+		                    }, { // 垂直向下
+		                        coords: [
+		                            [40, 164],
+		                            [40, 115]
+		                        ]
+		                    }, { //第一象限
+		                        coords: [
+		                            [40, 164],
+		                            [55, 192]
+		                        ]
+		                    }, { //第一象限
+		                        coords: [
+		                            [40, 164],
+		                            [56, 175]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#FFFFFF'
+		                            }
+		                        }
+		                    }, { //第一象限
+		                        coords: [
+		                            [40, 164],
+		                            [46, 197]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#FFFFFF'
+		                            }
+		                        }
+		                    }, { //第一象限
+		                        coords: [
+		                            [41, 190],
+		                            [47, 215]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#00FF33'
+		                            }
+		                        }
+		                    }, { //第一象限
+		                        coords: [
+		                            [48, 190],
+		                            [57, 205]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#00FF33'
+		                            }
+		                        }
+		                    }, { //第一象限
+		                        coords: [
+		                            [52, 180],
+		                            [62, 185]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#00FF33'
+		                            }
+		                        }
+		                    }, { //第一象限
+		                        coords: [
+		                            [55, 170],
+		                            [68, 171]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#00FF33'
+		                            }
+		                        }
+		                    }, { //第二象限
+		                        coords: [
+		                            [39, 166],
+		                            [24, 190]
+		                        ]
+		                    }, { //第二象限
+		                        coords: [
+		                            [40, 164],
+		                            [24, 175]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#FFFFFF'
+		                            }
+		                        }
+		                    }, { //第二象限
+		                        coords: [
+		                            [40, 164],
+		                            [31, 195]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#FFFFFF'
+		                            }
+		                        }
+		                    }, { //第二象限
+		                        coords: [
+		                            [25, 168],
+		                            [13, 176]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#00FF33'
+		                            }
+		                        }
+		                    }, { //第二象限
+		                        coords: [
+		                            [29, 175],
+		                            [18, 195]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#00FF33'
+		                            }
+		                        }
+		                    }, { //第二象限
+		                        coords: [
+		                            [33, 179],
+		                            [24, 210]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#00FF33'
+		                            }
+		                        }
+		                    }, { //第二象限
+		                        coords: [
+		                            [36, 185],
+		                            [35, 210]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#00FF33'
+		                            }
+		                        }
+		                    }, { //第三象限
+		                        coords: [
+		                            [40, 164],
+		                            [26, 137]
+		                        ]
+		                    }, { //第三象限
+		                        coords: [
+		                            [40, 164],
+		                            [34, 135]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#FFFFFF'
+		                            }
+		                        }
+		                    }, { //第三象限
+		                        coords: [
+		                            [40, 164],
+		                            [25, 153]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#FFFFFF'
+		                            }
+		                        }
+		                    }, { //第三象限
+		                        coords: [
+		                            [39, 144],
+		                            [36, 120]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#00FF33'
+		                            }
+		                        }
+		                    }, { //第三象限
+		                        coords: [
+		                            [34, 144],
+		                            [22, 123]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#00FF33'
+		                            }
+		                        }
+		                    }, { //第三象限
+		                        coords: [
+		                            [30, 151],
+		                            [21, 143]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#00FF33'
+		                            }
+		                        }
+		                    }, { //第三象限
+		                        coords: [
+		                            [30, 159],
+		                            [18, 157]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#00FF33'
+		                            }
+		                        }
+		                    }, { // 第四象限
+		                        coords: [
+		                            [40, 164],
+		                            [55, 135]
+		                        ]
+		                    }, { // 第四象限
+		                        coords: [
+		                            [40, 164],
+		                            [55, 152]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#FFFFFF'
+		                            }
+		                        }
+		                    }, { // 第四象限
+		                        coords: [
+		                            [40, 164],
+		                            [46, 135]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#FFFFFF'
+		                            }
+		                        }
+		                    }, { //第四象限
+		                        coords: [
+		                            [52, 160],
+		                            [65, 153]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#00FF33'
+		                            }
+		                        }
+		                    }, { //第四象限
+		                        coords: [
+		                            [52, 150],
+		                            [62, 133]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#00FF33'
+		                            }
+		                        }
+		                    }, { //第四象限
+		                        coords: [
+		                            [47, 144],
+		                            [53, 123]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#00FF33'
+		                            }
+		                        }
+		                    }, { //第四象限
+		                        coords: [
+		                            [43, 134],
+		                            [45, 113]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#00FF33'
+		                            }
+		                        }
+		                    }, ],
+		                    animationDelay: 1100
+		                }, {
+		                    coordinateSystem: 'cartesian2d',
+		                    type: 'lines',
+		                    zlevel: -2,
+		                    effect: {
+		                        show: true,
+		                        period: 1,
+		                        trailLength: 0.01,
+		                        symbolSize: 12,
+		                        symbol: 'circle',
+		                        loop: true
+		                    },
+		                    lineStyle: {
+		                        normal: {
+		                            color: '#ccc',
+		                            opacity: 0,
+		                            curveness: 0
+		                        }
+		                    },
+		                    data: [{
+		                        coords: [
+		                            [40, 25],
+		                            [40, 165]
+		                        ]
+		                    }],
+		                    animationDelay: 1100
+		                }, {
+		                    coordinateSystem: 'cartesian2d',
+		                    type: 'lines',
+		                    zlevel: -2,
+		                    effect: {
+		                        show: true,
+		                        period: 1,
+		                        trailLength: 0.01,
+		                        symbolSize: 12,
+		                        symbol: 'circle',
+		                        loop: true
+		                    },
+		                    lineStyle: {
+		                        normal: {
+		                            color: '#ccc',
+		                            opacity: 0,
+		                            curveness: 0
+		                        }
+		                    },
+		                    data: [{
+		                        coords: [
+		                            [110, 25],
+		                            [110, 165]
+		                        ]
+		                    }],
+		                    animationDelay: 1100
+		                }, {
+		                    coordinateSystem: 'cartesian2d',
+		                    type: 'lines',
+		                    zlevel: 2,
+		                    symbolSize: 3,
+		                    effect: {
+		                        show: true,
+		                        period: 1,
+		                        trailLength: 0.01,
+		                        symbolSize: 5,
+		                        symbol: 'pin',
+		                        loop: true
+		                    },
+		                    lineStyle: {
+		                        normal: {
+		                            color: '#ccc',
+		                            opacity: 0.02,
+		                            //curveness: -0.05,
+		                            width: 0.01,
+		                            //opacity: 0.6,
+		                            curveness: 0.1
+		                        }
+		                    },
+		                    data: [{
+		                        coords: [ // 竖直向上
+		                            [110, 166],
+		                            [110, 210]
+		                        ]
+		                    }, { // 水平向右
+		                        coords: [
+		                            [111, 165],
+		                            [135, 165]
+		
+		                        ]
+		                    }, { // 水平向左
+		                        coords: [
+		                            [109, 165],
+		                            [85, 165]
+		                        ]
+		                    }, { // 垂直向下
+		                        coords: [
+		                            [110, 164],
+		                            [110, 115]
+		                        ]
+		                    }, { //第一象限
+		                        coords: [
+		                            [110, 164],
+		                            [125, 192]
+		                        ]
+		                    }, { //第一象限
+		                        coords: [
+		                            [110, 164],
+		                            [126, 175]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#DD2222'
+		                            }
+		                        }
+		                    }, { //第一象限
+		                        coords: [
+		                            [110, 164],
+		                            [116, 197]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#DD2222'
+		                            }
+		                        }
+		                    }, { //第一象限
+		                        coords: [
+		                            [111, 190],
+		                            [117, 215]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#FFFF00'
+		                            }
+		                        }
+		                    }, { //第一象限
+		                        coords: [
+		                            [118, 190],
+		                            [127, 205]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#FFFF00'
+		                            }
+		                        }
+		                    }, { //第一象限
+		                        coords: [
+		                            [122, 180],
+		                            [132, 185]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#FFFF00'
+		                            }
+		                        }
+		                    }, { //第一象限
+		                        coords: [
+		                            [125, 170],
+		                            [138, 171]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#FFFF00'
+		                            }
+		                        }
+		                    }, { //第二象限
+		                        coords: [
+		                            [109, 166],
+		                            [94, 190]
+		                        ]
+		                    }, { //第二象限
+		                        coords: [
+		                            [110, 164],
+		                            [94, 175]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#DD2222'
+		                            }
+		                        }
+		                    }, { //第二象限
+		                        coords: [
+		                            [110, 164],
+		                            [101, 195]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#DD2222'
+		                            }
+		                        }
+		                    }, { //第二象限
+		                        coords: [
+		                            [95, 168],
+		                            [83, 176]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#FFFF00'
+		                            }
+		                        }
+		                    }, { //第二象限
+		                        coords: [
+		                            [99, 175],
+		                            [88, 195]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#FFFF00'
+		                            }
+		                        }
+		                    }, { //第二象限
+		                        coords: [
+		                            [103, 179],
+		                            [94, 210]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#FFFF00'
+		                            }
+		                        }
+		                    }, { //第二象限
+		                        coords: [
+		                            [106, 185],
+		                            [105, 210]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#FFFF00'
+		                            }
+		                        }
+		                    }, { //第三象限
+		                        coords: [
+		                            [110, 164],
+		                            [96, 137]
+		                        ]
+		                    }, { //第三象限
+		                        coords: [
+		                            [110, 164],
+		                            [104, 135]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#DD2222'
+		                            }
+		                        }
+		                    }, { //第三象限
+		                        coords: [
+		                            [110, 164],
+		                            [95, 153]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#DD2222'
+		                            }
+		                        }
+		                    }, { //第三象限
+		                        coords: [
+		                            [109, 144],
+		                            [106, 120]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#FFFF00'
+		                            }
+		                        }
+		                    }, { //第三象限
+		                        coords: [
+		                            [104, 144],
+		                            [92, 123]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#FFFF00'
+		                            }
+		                        }
+		                    }, { //第三象限
+		                        coords: [
+		                            [100, 151],
+		                            [91, 143]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#FFFF00'
+		                            }
+		                        }
+		                    }, { //第三象限
+		                        coords: [
+		                            [100, 159],
+		                            [88, 157]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#FFFF00'
+		                            }
+		                        }
+		                    }, { // 第四象限
+		                        coords: [
+		                            [110, 164],
+		                            [125, 135]
+		                        ]
+		                    }, { // 第四象限
+		                        coords: [
+		                            [110, 164],
+		                            [125, 152]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#DD2222'
+		                            }
+		                        }
+		                    }, { // 第四象限
+		                        coords: [
+		                            [110, 164], // 红色象限位置错乱 由 [555, 164] 改为[110, 164]
+		                            [116, 135]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#DD2222'
+		                            }
+		                        }
+		                    }, { //第四象限
+		                        coords: [
+		                            [122, 160],
+		                            [135, 153]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#FFFF00'
+		                            }
+		                        }
+		                    }, { //第四象限
+		                        coords: [
+		                            [122, 150],
+		                            [132, 133]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#FFFF00'
+		                            }
+		                        }
+		                    }, { //第四象限
+		                        coords: [
+		                            [117, 144],
+		                            [123, 123]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#FFFF00'
+		                            }
+		                        }
+		                    }, { //第四象限
+		                        coords: [
+		                            [113, 134],
+		                            [115, 113]
+		                        ],
+		                        lineStyle: {
+		                            normal: {
+		                                color: '#FFFF00'
+		                            }
+		                        }
+		                    }, ],
+		                    animationDelay: 1100
+		                }],
+		                animationEasing: 'elasticOut',
+		                animationDelayUpdate: function(idx) {
+		                    return idx * 5;
+		                }
+		            };
+		            
+		            fireworksChart.setOption(option);
+				})();
+				
+				/*************** 关系图 **************/
+				//初始化echarts实例
+				const relationChart = echarts.init(document.getElementById("relationChart"));
+				const relationOpt = {
+				    animationDurationUpdate: 1500,
+				    animationEasingUpdate: 'quinticInOut',
+				    label: {
+				        normal: {
+				            show: true,
+				            textStyle: {
+				                fontSize: 12
+				            }
+				        }
+				    },
+				    series: [{
+			            type: 'graph',
+			            symbolSize: 45,
+			            focusNodeAdjacency: true,
+			            roam: true,
+			            layout: 'force',
+			            force: {
+			                repulsion: 320 //斥力因子，值越大，斥力越大
+			            },
+			            label: {
+			                normal: {
+			                    show: true,
+			                    textStyle: {
+			                        fontSize: 12
+			                    },
+			                }
+			            },
+			            edgeSymbolSize: [4, 50],
+			            edgeLabel: {
+			                normal: {
+			                    show: true,
+			                    textStyle: {
+			                        fontSize: 10
+			                    },
+			                    formatter: "{c}"
+			                }
+			            },
+			            categories: [{
+			            	name: '全栈',
+			            	itemStyle: {
+			            		normal: {
+			            			color: '#f2637b'
+			            		}
+			            	}
+			            }, {
+			                name: '前端',
+			                itemStyle: {
+			                    normal: {
+			                        color: "#eaa674",
+			                    }
+			                }
+			            }, {
+			                name: '移动端',
+			                itemStyle: {
+			                    normal: {
+			                        color: "#3aa1ff",
+			                    }
+			                }
+			            }, {
+			                name: '服务端',
+			                itemStyle: {
+			                    normal: {
+			                        color: "#4ecb73",
+			                    }
+			                }
+			            }],
+			            data: [{
+			            	name: '全栈',
+			            	category: 0,
+			            	draggable: true
+			            }, {
+			            	name: '前端',
+			            	category: 1,
+			            	draggable: true
+			            }, {
+			            	name: '移动端',
+			            	category: 2,
+			            	draggable: true
+			            }, {
+			            	name: '服务端',
+			            	category: 3,
+			            	draggable: true
+			            }, {
+			                name: 'HTML',
+			                category: 1,
+			                draggable: true,
+			            }, {
+			                name: 'CSS',
+			                category: 1,
+			                draggable: true,
+			            }, {
+			                name: 'JavaScript',
+			                category: 1,
+			                draggable: true,
+			            }, {
+			                name: 'TypeScript',
+			                category: 1,
+			                draggable: true,
+			            }, {
+			                name: 'Java',
+			                category: 3,
+			                draggable: true,
+			            }, {
+			                name: 'PHP',
+			                category: 3,
+			                draggable: true,
+			            }, {
+			                name: 'Python',
+			                category: 3,
+			                draggable: true,
+			            }, {
+			                name: 'Andriod',
+			                category: 2,
+			                draggable: true,
+			            }, {
+			                name: 'Object-C',
+			                category: 2,
+			                draggable: true,
+			            }, {
+			                name: 'Swift',
+			                category: 2,
+			                draggable: true,
+			            }],
+			            links: [{
+			            	source: 0,
+			                target: 1,
+			                value: ''
+			            }, {
+			            	source: 0,
+			                target: 2,
+			                value: ''
+			            }, {
+			            	source: 0,
+			                target: 3,
+			                value: ''
+			            }, {
+			                source: 1,
+			                target: 4,
+			                value: ''
+			            }, {
+			            	source: 1,
+			                target: 5,
+			                value: ''
+			            }, {
+			            	source: 1,
+			                target: 6,
+			                value: ''
+			            }, {
+			            	source: 1,
+			                target: 7,
+			                value: ''
+			            }, {
+			                source: 6,
+			                target: 7,
+			                value: '超集'
+			            }, {
+			            	source: 3,
+			                target: 8,
+			                value: ''
+			            }, {
+			            	source: 3,
+			                target: 9,
+			                value: ''
+			            }, {
+			            	source: 3,
+			                target: 10,
+			                value: ''
+			            }, {
+			            	source: 9,
+			                target: 10,
+			                value: '脚本'
+			            }, {
+			            	source: 2,
+			                target: 11,
+			                value: ''
+			            }, {
+			            	source: 2,
+			                target: 12,
+			                value: ''
+			            }, {
+			            	source: 2,
+			                target: 13,
+			                value: ''
+			            }, {
+			            	source: 12,
+			                target: 13,
+			                value: 'iOS'
+			            }],
+			            lineStyle: {
+			                normal: {
+			                    opacity: 0.9,
+			                    width: 1,
+			                    curveness: 0
+			                }
+			            }
+				    }]
+				};
+				relationChart.setOption(relationOpt);
+				
+				/*************** 水球 **************/
+				//https://github.com/ecomfe/echarts-liquidfill
+				//初始化echarts实例
+				const ballChart= echarts.init(document.getElementById("ballChart"));
+				const ballOpt = {
+					series: [{
+				        type: 'liquidFill',
+				        radius: '95%',
+				        label: {
+				        	show: false
+				        },
+				        shape: 'path://M367.855,428.202c-3.674-1.385-7.452-1.966-11.146-1.794c0.659-2.922,0.844-5.85,0.58-8.719 c-0.937-10.407-7.663-19.864-18.063-23.834c-10.697-4.043-22.298-1.168-29.902,6.403c3.015,0.026,6.074,0.594,9.035,1.728 c13.626,5.151,20.465,20.379,15.32,34.004c-1.905,5.02-5.177,9.115-9.22,12.05c-6.951,4.992-16.19,6.536-24.777,3.271 c-13.625-5.137-20.471-20.371-15.32-34.004c0.673-1.768,1.523-3.423,2.526-4.992h-0.014c0,0,0,0,0,0.014 c4.386-6.853,8.145-14.279,11.146-22.187c23.294-61.505-7.689-130.278-69.215-153.579c-61.532-23.293-130.279,7.69-153.579,69.202 c-6.371,16.785-8.679,34.097-7.426,50.901c0.026,0.554,0.079,1.121,0.132,1.688c4.973,57.107,41.767,109.148,98.945,130.793 c58.162,22.008,121.303,6.529,162.839-34.465c7.103-6.893,17.826-9.444,27.679-5.719c11.858,4.491,18.565,16.6,16.719,28.643 c4.438-3.126,8.033-7.564,10.117-13.045C389.751,449.992,382.411,433.709,367.855,428.202z',
+				        outline: {
+				            show: false
+				        },
+				        backgroundStyle: {
+				            borderColor: '#156ACF',
+				            borderWidth: 1,
+				            shadowColor: 'rgba(0, 0, 0, 0.4)',
+				            shadowBlur: 20
+				        },
+				        data: [0.6, 0.5, 0.4, 0.3]
+				    }]
+				};
+				ballChart.setOption(ballOpt);
+				
+				/*************** 词云 **************/
+				//https://github.com/ecomfe/echarts-wordcloud
+				//初始化echarts实例
+				const wordChart= echarts.init(document.getElementById("wordChart"));
+				const wordOpt = {
+				    series: [{
+				        type: 'wordCloud',
+				        shape: 'circle', //circle cardioid diamond triangle-forward triangle
+				       	left: 0,
+				       	right: 0,
+				       	top: 0,
+				       	right: 0,
+				       	width: '100%',
+				       	height: '100%',
+				        gridSize: 0, //值越大，word间的距离越大，单位像素
+				        sizeRange: [10, 32], //word的字体大小区间，单位像素
+				        rotationRange: [-90, 90], //word的可旋转角度区间
+				        textStyle: {
+				            normal: {
+				                color: function() {
+				                    return 'rgb(' + [
+				                        Math.round(Math.random() * 160),
+				                        Math.round(Math.random() * 160),
+				                        Math.round(Math.random() * 160)
+				                    ].join(',') + ')';
+				                }
+				            },
+				            emphasis: {
+				                shadowBlur: 2,
+				                shadowColor: '#000'
+				            }
+				        },
+				        data: [{
+				            name: '数据可视化',
+				            value: 3000,
+				            textStyle: {
+				            	normal: {color: '#f52f55'},
+				            	emphasis: {}
+				            }
+				        }, {
+				            name: '大数据',
+				            value: 2181
+				        }, {
+				            name: '云计算',
+				            value: 1386
+				        }, {
+				            name: '物联网',
+				            value: 2055
+				        }, {
+				            name: '移动互联网',
+				            value: 2467
+				        }, {
+				            name: '人工智能',
+				            value: 2244
+				        }, {
+				            name: '深度学习',
+				            value: 1898
+				        }, {
+				            name: '机器学习',
+				            value: 1484
+				        }, {
+				            name: '区块链',
+				            value: 3865
+				        }, {
+				            name: 'AI',
+				            value: 897
+				        }, {
+				            name: 'Big Data',
+				            value: 847
+				        }, {
+				            name: 'Deep Learning',
+				            value: 1366
+				        }, {
+				            name: 'IoT',
+				            value: 555
+				        }, {
+				            name: 'Data Visualization',
+				            value: 550
+				        }, {
+				            name: '互联网+',
+				            value: 2222
+				        }, {
+				            name: '智能合约',
+				            value: 366
+				        }, {
+				            name: '比特币',
+				            value: 360
+				        }, {
+				            name: 'Block Chain',
+				            value: 282
+				        }, {
+				            name: '数据挖掘',
+				            value: 273
+				        }, {
+				            name: 'Hadoop',
+				            value: 265
+				        }]
+				    }],
+				    backgroundColor: 'rgba(255, 255, 255, 0.7)'
+				};
+				wordChart.setOption(wordOpt);
+				
+				/********** 窗口大小改变时，重置报表大小 ********************/
+				window.onresize = function() {
+					wordChart.resize();
+					ballChart.resize();
+					relationChart.resize();
+					fireworksChart.resize();
+					mapChart.resize();
+				};
+			});
+		</script>
+	</body>
+</html>
