@@ -20,5 +20,5 @@
 
 基于阿里云DataV大屏制作工具，采用静态JSON数据
 
+演示地址：[https://yyhsong.github.io/iDataV/](https://yyhsong.github.io/iDataV/)
 项目简介：[https://blog.csdn.net/hwhsong/article/details/80805511](https://blog.csdn.net/hwhsong/article/details/80805511)
-
