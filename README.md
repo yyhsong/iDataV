@@ -16,4 +16,9 @@
 
 词云，水球图，烟花秀，关系图谱，中国地图
 
+## Hello DataV
+
+基于阿里云DataV大屏制作工具，采用静态JSON数据
+
 项目简介：[https://blog.csdn.net/hwhsong/article/details/80805511](https://blog.csdn.net/hwhsong/article/details/80805511)
+
