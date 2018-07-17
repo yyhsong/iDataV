@@ -16,9 +16,13 @@
 
 词云，水球图，烟花秀，关系图谱，中国地图
 
-## Hello DataV
+## DataV示例 - 智慧文旅驾驶舱
 
-基于阿里云DataV大屏制作工具，采用静态JSON数据
+基于阿里云DataV大屏制作工具，演示图表组件基本用法
+
+## DataV示例 - 企业实时销售大盘
+
+基于DataV行业模板快速生成，采用静态JSON数据
 
 演示地址：[https://yyhsong.github.io/iDataV/](https://yyhsong.github.io/iDataV/)
 
