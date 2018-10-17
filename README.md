@@ -24,6 +24,15 @@
 
 基于DataV行业模板快速生成，采用静态JSON数据
 
+## 百度Sugar示例 - 上交所上市公司全景概览
+
+基于百度Sugar行业模板快速生成，采用远程数据源
+
+## 百度Sugar示例 - 深交所上市公司全景概览
+
+以已有的大屏为模板快速创建，切换风格，更改数据源
+
+
 演示地址：[https://yyhsong.github.io/iDataV/](https://yyhsong.github.io/iDataV/)
 
 项目简介：[https://blog.csdn.net/hwhsong/article/details/80805511](https://blog.csdn.net/hwhsong/article/details/80805511)
