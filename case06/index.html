@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>旭日图 - 基于ECharts V4.2</title>
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+	</head>
+	
+	<body>
+		<!--<header id="header">
+			<h3 class="title">旭日图 - 基于ECharts V4.2</h3>
+		</header>-->
+		
+		<div id="container">
+			<div class="chart-div" id="sunChart">
+				<div class="chart-loader"><div class="loader"></div></div>
+			</div>
+		</div>
+		
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript" src="js/echarts.min.js"></script>
+		<script type="text/javascript" src="js/echarts-theme-shine.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				//初始化报表对象并指定其风格
+				const sunChart = echarts.init(document.getElementById("sunChart"), 'shine');
+				const sunChartOpt = {
+					title: {
+						text: "上市公司行业分类",
+						subtext: "纯属虚构",
+						textStyle: {
+							color: "#fff"
+						},
+						subtextStyle: {
+							fontSize: 12
+						},
+						left: 15,
+						top: 15
+					},
+					tooltip: {
+						show: true
+					},
+					series: {
+						type: "sunburst",
+						radius: [0, "75%"],
+						center: ["50%", "52%"],
+						sort: null,
+						levels: [{}, {
+							r0: "15%",
+							r: "35%",
+							itemStyle: {
+								borderWidth: 0.8
+							},
+							label: {
+								align: "right",
+								fontSize: 10,
+								color: '#fff',
+								textBorderWidth: 0
+							}
+						}, {
+							r0: "35%",
+							r: "75%",
+							itemStyle: {
+								borderWidth: 0.8
+							},
+							label: {
+								position: 'outside',
+								padding: 3,
+								fontSize: 10,
+								color: 'auto',
+								textBorderWidth: 0
+							}
+						}]
+					}
+				};
+				sunChart.setOption(sunChartOpt);
+				//获取报表数据
+				$.ajax({
+					url: "data/industry.json",
+					dataType: "json"
+				}).done(function() {
+					$("#sunChart").addClass("chart-done");
+				}).done(function(data) {
+					//console.log(data);
+					//自定义特定数据项的样式风格
+					const itemStyle = {color: "#800080"};
+					data[2].itemStyle = itemStyle;
+					for(let i in data[2].children) {
+						data[2].children[i].itemStyle = itemStyle;
+					}
+					//渲染报表数据
+					sunChart.setOption({
+						series: {
+							data: data
+						}
+					});
+				}).fail(function(jqXHR) {
+					console.log("Ajax Fail: ", jqXHR.status, jqXHR.statusText);
+				});
+			
+				//浏览器窗口发生变化时，重置报表大小
+				$(window).resize(function() {
+					sunChart.resize();
+				});
+			});
+		</script>
+	</body>
+</html>
