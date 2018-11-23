@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html style="height:100%;">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>地理信息数据 - ECharts &amp; Baidu Map</title>
+		<link rel="stylesheet" type="text/css" href="css/pace.css" />
+		<script type="text/javascript" src="js/pace.min.js"></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+		<script type="text/javascript" src="js/echarts.min.js"></script>
+		<script type="text/javascript" src="js/echarts-bmap.js"></script>
+	</head>
+	
+	<body style="margin:0;padding:0;height:100%;">
+		<div id="mapChart" style="height:100%;min-height:450px;box-sizing:border-box;"></div>
+
+		<script type="text/javascript">
+			$(function() {
+				//初始化地图报表
+				const mapChart = echarts.init(document.getElementById("mapChart"));
+				const mapChartOpt = {
+					title: {
+						text: "上市公司地域分布",
+						subtext: "纯属虚构",
+						top: 5,
+						left: "center",
+						textStyle: {
+							color: "#fff"
+						}
+					},
+					tooltip: {
+						trigger: 'item'
+					},
+					visualMap: {
+						type: "piecewise",
+					    left: 15,
+					    top: 15,
+				        itemWidth: 15,
+				        min: 1,
+				        max: 2,
+				        splitNumber: 2,
+				        pieces: [
+				        	{min:1, max:1, label:"上交所", color:"#970f48"},
+				        	{min:2, max:2, label:"深交所", color:"#f4e935"}
+				        ],
+				        textStyle: {
+				        	color: "#fff"
+				        },
+				        calculable: true,
+				        seriesIndex: [0]
+				    },
+			        bmap: {
+			            center: [108.943393, 34.384291],
+			            zoom: 6, //地图缩放级别
+			            roam: true, //开启鼠标缩放和漫游
+			            mapStyle: { //定制地图样式
+			            	styleJson: [
+			            		{
+			                        "featureType": "water",
+			                        "elementType": "all",
+			                        "stylers": {
+			                            "color": "#044161"
+			                        }
+			                    },
+			                    {
+			                        "featureType": "land",
+			                        "elementType": "all",
+			                        "stylers": {
+			                            "color": "#004981"
+			                        }
+			                    },
+			                    {
+			                        "featureType": "boundary",
+			                        "elementType": "geometry",
+			                        "stylers": {
+			                            "color": "#064f85"
+			                        }
+			                    },
+			                    {
+			                        "featureType": "railway",
+			                        "elementType": "all",
+			                        "stylers": {
+			                            "visibility": "off"
+			                        }
+			                    },
+			                    {
+			                        "featureType": "highway",
+			                        "elementType": "geometry",
+			                        "stylers": {
+			                        	"visibility": "off",
+			                            "color": "#004981"
+			                        }
+			                    },
+			                    {
+			                        "featureType": "highway",
+			                        "elementType": "geometry.fill",
+			                        "stylers": {
+			                            "color": "#005b96",
+			                            "lightness": 1
+			                        }
+			                    },
+			                    {
+			                        "featureType": "highway",
+			                        "elementType": "labels",
+			                        "stylers": {
+			                            "visibility": "off"
+			                        }
+			                    },
+			                    {
+			                        "featureType": "arterial",
+			                        "elementType": "geometry",
+			                        "stylers": {
+			                            "color": "#004981"
+			                        }
+			                    },
+			                    {
+			                        "featureType": "arterial",
+			                        "elementType": "geometry.fill",
+			                        "stylers": {
+			                            "color": "#00508b"
+			                        }
+			                    },
+			                    {
+			                        "featureType": "poi",
+			                        "elementType": "all",
+			                        "stylers": {
+			                            "visibility": "off"
+			                        }
+			                    },
+			                    {
+			                        "featureType": "green",
+			                        "elementType": "all",
+			                        "stylers": {
+			                            "color": "#056197",
+			                            "visibility": "off"
+			                        }
+			                    },
+			                    {
+			                        "featureType": "subway",
+			                        "elementType": "all",
+			                        "stylers": {
+			                            "visibility": "off"
+			                        }
+			                    },
+			                    {
+			                        "featureType": "manmade",
+			                        "elementType": "all",
+			                        "stylers": {
+			                            "visibility": "off"
+			                        }
+			                    },
+			                    {
+			                        "featureType": "local",
+			                        "elementType": "all",
+			                        "stylers": {
+			                            "visibility": "off"
+			                        }
+			                    },
+			                    {
+			                        "featureType": "arterial",
+			                        "elementType": "labels",
+			                        "stylers": {
+			                            "visibility": "off"
+			                        }
+			                    },
+			                    {
+			                        "featureType": "boundary",
+			                        "elementType": "geometry.fill",
+			                        "stylers": {
+			                            "color": "#029fd4"
+			                        }
+			                    },
+			                    {
+			                        "featureType": "building",
+			                        "elementType": "all",
+			                        "stylers": {
+			                            "color": "#1a5787"
+			                        }
+			                    },
+			                    {
+			                        "featureType": "label",
+			                        "elementType": "all",
+			                        "stylers": {
+			                            "visibility": "off"
+			                        }
+			                    }
+			            	]
+			            }
+			        },
+			        series: [{
+			        	name: "上市公司地域分布",
+			        	type: "effectScatter",
+			        	coordinateSystem: "bmap",
+			        	symbol: 'circle',
+			        	symbolSize: 6,
+			        	showEffectOn: 'emphasis',
+				        rippleEffect: { //涟漪特效
+				            period: 2, //特效动画时长 
+				            scale: 3, //波纹的最大缩放比例
+				            brushType: 'stroke' //波纹的绘制方式：stroke | fill
+				        },
+				        hoverAnimation: true,
+				        itemStyle: {
+				        	normal: {
+				        		color: function(params) {
+				        			const d = params.data;
+				        			if(d.exchange.toLowerCase() == "sh") {
+				        				return '#970f48';
+				        			}
+				        			return '#f4e935';
+				        		}, 
+				        		opacity: .85
+				        	}
+				        },
+				        tooltip: {
+				        	formatter: function(params) {
+				        		const poi = params.data;
+				  				let tip = poi.company + '<br />';
+				  				tip += '股票代码：' + poi.code + '<br />';
+				  				tip += '股票名称：' + poi.name + '<br />';
+				  				tip += '注册地址：' + poi.address + '<br />';
+				        		return tip;
+				        	}
+				        },
+				        zlevel: 1,
+			        	data: []
+			        }]
+				};
+				mapChart.setOption(mapChartOpt);
+				
+				//获取地图报表数据
+				$.ajax({
+					url: "data/listed-company.json",
+					dataType: "json"
+				}).done(function(data) {
+					//console.log("RespData: ", data);
+					let pointData = [];
+					for(let i=0;i<data.length;i++) {
+						const poi = data[i];
+						const v = poi.stock_exchange.toLowerCase()=="sh" ? 1 : 2;
+						pointData.push({
+							name: poi.stock_name,
+							value: [poi.lng, poi.lat, v],
+							code: poi.stock_code,
+							company: poi.company_name,
+							address: poi.registered_address,
+							exchange: poi.stock_exchange
+						});
+					}
+					mapChart.setOption({
+						series: [{
+							name: '上市公司地域分布',
+							data: pointData
+						}]
+					});
+				}).fail(function(jqXHR) {
+					console.error("Ajax Error: ", jqXHR.status, jqXHR.statusText);
+				});
+				
+				$(window).resize(function() {
+					mapChart.resize();
+				});
+			});
+		</script>
+	</body>
+</html>
