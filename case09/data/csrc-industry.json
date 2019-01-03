@@ -1,0 +1,154 @@
+[
+	{
+		"code": "A",
+		"industry": "农、林、牧、渔业",
+		"alias": "农林牧渔",
+		"sh_stock": 15,
+		"sz_stock": 26,
+		"stock": 41
+	},
+	{
+		"code": "B",
+		"industry": "采矿业",
+		"alias": "采矿业",
+		"sh_stock": 51,
+		"sz_stock": 26,
+		"stock": 77
+	},
+	{
+		"code": "C",
+		"industry": "制造业",
+		"alias": "制造业",
+		"sh_stock": 828,
+		"sz_stock": 1471,
+		"stock": 999
+	},
+	{
+		"code": "D",
+		"industry": "电力、热力、燃气及水生产和供应业",
+		"alias": "水电煤气",
+		"sh_stock": 66,
+		"sz_stock": 47,
+		"stock": 113
+	},
+	{
+		"code": "E",
+		"industry": "建筑业",
+		"alias": "建筑业",
+		"sh_stock": 50,
+		"sz_stock": 49,
+		"stock": 99
+	},
+	{
+		"code": "F",
+		"industry": "批发和零售业",
+		"alias": "批发零售",
+		"sh_stock": 103,
+		"sz_stock": 68,
+		"stock": 171
+	},
+	{
+		"code": "G",
+		"industry": "交通运输、仓储和邮政业",
+		"alias": "运输仓储",
+		"sh_stock": 73,
+		"sz_stock": 34,
+		"stock": 107
+	},
+	{
+		"code": "H",
+		"industry": "住宿和餐饮业",
+		"alias": "住宿餐饮",
+		"sh_stock": 4,
+		"sz_stock": 7,
+		"stock": 11
+	},
+	{
+		"code": "I",
+		"industry": "信息传输、软件和信息技术服务业",
+		"alias": "信息技术",
+		"sh_stock": 60,
+		"sz_stock": 204,
+		"stock": 264
+	},
+	{
+		"code": "J",
+		"industry": "金融业",
+		"alias": "金融业",
+		"sh_stock": 64,
+		"sz_stock": 27,
+		"stock": 91
+	},
+	{
+		"code": "K",
+		"industry": "房地产业",
+		"alias": "房地产",
+		"sh_stock": 74,
+		"sz_stock": 63,
+		"stock": 137
+	},
+	{
+		"code": "L",
+		"industry": "租赁和商务服务业",
+		"alias": "商务服务",
+		"sh_stock": 17,
+		"sz_stock": 36,
+		"stock": 53
+	},
+	{
+		"code": "M",
+		"industry": "科学研究和技术服务业",
+		"alias": "科学服务",
+		"sh_stock": 20,
+		"sz_stock": 29,
+		"stock": 49
+	},
+	{
+		"code": "N",
+		"industry": "水利、环境和公共设施管理业",
+		"alias": "公共环保",
+		"sh_stock": 19,
+		"sz_stock": 31,
+		"stock": 50
+	},
+	{
+		"code": "O",
+		"industry": "居民服务、修理和其他服务业",
+		"alias": "居民服务",
+		"sh_stock": 0,
+		"sz_stock": 1,
+		"stock": 1
+	},
+	{
+		"code": "P",
+		"industry": "教育",
+		"alias": "教育",
+		"sh_stock": 2,
+		"sz_stock": 1,
+		"stock": 3
+	},
+	{
+		"code": "Q",
+		"industry": "卫生和社会工作",
+		"alias": "卫生",
+		"sh_stock": 3,
+		"sz_stock": 7,
+		"stock": 10
+	},
+	{
+		"code": "R",
+		"industry": "文化、体育和娱乐业",
+		"alias": "文化传播",
+		"sh_stock": 26,
+		"sz_stock": 32,
+		"stock": 58
+	},
+	{
+		"code": "S",
+		"industry": "综合",
+		"alias": "综合",
+		"sh_stock": 15,
+		"sz_stock": 7,
+		"stock": 22
+	}
+]
