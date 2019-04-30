@@ -49,6 +49,10 @@
 
 以已有的大屏为模板快速创建，切换风格，更改数据源
 
+## 大屏模板
+
+可在这些不同风格的模板基础上快速开始一个可视化大屏项目
+
 
 演示地址：[https://yyhsong.github.io/iDataV/](https://yyhsong.github.io/iDataV/)
 
