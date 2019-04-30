@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>ECharts &amp; AntV编程实践</title>
+		<style type="text/css">
+			.chart-div {margin:15px auto;min-width:600px;height:250px;border:1px solid #ccc;}
+		</style>
+	</head>
+	
+	<body>
+		<!-- ECharts报表容器 -->
+		<div class="chart-div" id="eChart"></div>
+		<!-- AntV报表容器 -->
+		<div class="chart-div" id="vChart"></div>
+		
+		<!-- 引入ECharts相关脚本 -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0/echarts.min.js"></script>
+		<!-- 引入AntV相关脚本 -->
+		<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g2-3.4.1/dist/g2.min.js"></script>
+		<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.data-set-0.10.1/dist/data-set.min.js"></script>
+		<script type="text/javascript">
+			/*********** ECharts报表 **********/
+			//初始化图表
+			const eChart = echarts.init(document.getElementById("eChart"));
+			//图表配置项
+			const eOpt = {
+				legend: {
+					top: 10,
+					left: 'center',
+					itemGap: 10,
+					itemWidth: 10,
+					itemHeight: 10,
+					textStyle: {
+						fontSize: 12,
+						color: "#333"
+					}
+				},
+				grid: {
+			        left: 20,
+			        right: 20,
+			        top: 35,
+			        bottom: 10,
+			        containLabel: true
+			    },
+			    tooltip: {
+			    	trigger: "axis",
+					axisPointer: {
+						type: "shadow"
+					}
+			    },
+			    xAxis: [{
+		            type: 'category',
+		            axisLine: {
+		            	lineStyle: {color: '#ccc'}
+		            },
+		            axisTick: {
+		            	show: false,
+		                alignWithLabel: true
+		            },
+		            axisLabel: {
+		            	interval: 0,
+		            	color: '#666'
+		            },
+		            data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+			    }],
+			    yAxis: [{
+			        type: 'value',
+			        splitNumber: 5,
+			        axisLine: {
+		            	lineStyle: {color: '#ccc'}
+		            },
+		            axisTick: {
+		            	show: false,
+		                alignWithLabel: true
+		            },
+		            axisLabel: {
+		            	color: '#666',
+		            	formatter: '{value}人'
+		            },
+		            splitLine: {
+		            	lineStyle: {
+		            		color: '#ddd',
+		            		type: 'dashed'
+		            	}
+		            }
+			    }, {
+			    	type: 'value',
+			    	splitNumber: 6,
+			        axisLine: {
+		            	lineStyle: {color: '#ccc'}
+		            },
+		            axisTick: {
+		            	show: false,
+		                alignWithLabel: true
+		            },
+		            axisLabel: {
+		            	color: '#666',
+		            	formatter: '{value}%'
+		            },
+		            splitLine: {
+		            	lineStyle: {
+		            		color: '#ddd',
+		            		type: 'dashed'
+		            	}
+		            }
+			    }],
+			    series: [{
+		            name: '增长',
+		            type: 'bar',
+		            barMaxWidth: 50,
+		            itemStyle: {
+		            	color: '#0098d9'
+		            },
+		            data: [2842, 5625, 4009, 3533, 4234, 3521, 2999, 3876, 4532, 4788, 6511, 3882]
+			    }, {
+			    	name: '占比',
+		            type: 'line',
+		            smooth: true,
+		            yAxisIndex: 1,
+		            itemStyle: {
+		            	color: '#d4237a'
+		            },
+		            data: [5.64, 11.17, 7.96, 7.02, 8.41, 6.99, 5.96, 7.70, 9.00, 9.51, 12.93, 7.71]
+			    }]
+			};
+			//渲染图表
+			eChart.setOption(eOpt);
+			
+			/*********** AntV报表 **********/
+			//初始化图表
+			const vChart = new G2.Chart({
+				//theme: "dark", //设置主题
+				//renderer: 'svg', //设置渲染方案
+				container: "vChart",
+				forceFit: true,
+				height: 250,
+				padding: [35, 60]
+			});
+			//原始数据
+			const vData = [
+				{month:"1月", count:2842},
+				{month:"2月", count:5625},
+				{month:"3月", count:4009},
+				{month:"4月", count:3533},
+				{month:"5月", count:4234},
+				{month:"6月", count:3521},
+				{month:"7月", count:2999},
+				{month:"8月", count:3876},
+				{month:"9月", count:4532},
+				{month:"10月", count:4788},
+				{month:"11月", count:6511},
+				{month:"12月", count:3882}
+			];
+			//数据预处理
+			const dv = new DataSet.View().source(vData);
+			dv.transform({
+				type: 'percent',
+				field: 'count',
+				dimension: 'month',
+				as: 'percent'
+			});
+			//加载数据及列定义
+			vChart.source(dv);
+			vChart.scale({
+				count: {
+					alias: '增长',
+					tickCount: 6,
+					formatter: val => {
+						return val + '人'
+					}
+				},
+				percent: {
+					alias: '占比',
+					tickCount: 5,
+					formatter: val => {
+						return (val*100).toFixed(2) + '%';
+					}
+				}
+			});
+			//图形语法
+			vChart.legend(true, {
+				position: 'top'
+			});
+			vChart.interval().position('month*count')
+							.color('month')
+							.tooltip('count')
+							.label('count', {
+								offset: 10
+							});
+			vChart.line().position('month*percent')
+							.shape('smooth')
+							.color('#d4237a');
+			vChart.point().position('month*percent')
+							.color('#d4237a')
+							.size(2);
+			//渲染图表
+			vChart.render();
+		</script>
+	</body>
+</html>
