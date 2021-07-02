@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>大屏数据可视化模板</title>
+		<link rel="stylesheet" type="text/css" href="./css/app.css" />
+	</head>
+	
+	<body>
+		<div id="dashboard">
+			<!-- 左侧栏 -->
+			<div id="colLeft">
+				<div class="panel-div">
+					<div class="panel-title">
+						<ul class="panel-tab">
+							<li class="active"><a href="#">Tab1</a></li>
+							<li><a href="#">Tab2</a></li>
+							<li><a href="#">Tab3</a></li>
+						</ul>
+					</div>
+					<div class="panel-con"></div>
+				</div>
+				<div class="panel-div">
+					<div class="panel-title">
+						<ul class="panel-tab">
+							<li class="active"><a href="#">Tab1</a></li>
+							<li><a href="#">Tab2</a></li>
+							<li><a href="#">Tab3</a></li>
+						</ul>
+					</div>
+					<div class="panel-con"></div>
+				</div>
+				<div class="panel-div">
+					<div class="panel-title">
+						<ul class="panel-tab">
+							<li class="active"><a href="#">Tab1</a></li>
+							<li><a href="#">Tab2</a></li>
+							<li><a href="#">Tab3</a></li>
+						</ul>
+					</div>
+					<div class="panel-con"></div>
+				</div>
+			</div>
+			
+			<!-- 中间区域 -->
+			<div id="colCenter">
+				<!-- 标题 -->
+				<div id="header">
+					<img class="header-title" src="./img/header-title.png" />
+				</div>
+				<!-- 核心图表区 -->
+				<div id="container">
+					<!-- 左侧图表 -->
+					<div id="conLeft">
+						<div class="chart-panel">
+							<div class="chart-title">
+								<span class="title">图表标题</span>
+							</div>
+							<div class="chart-div">
+								<div class="chart-loader"><div class="loader"></div></div>
+							</div>
+						</div>
+						<div class="chart-panel chart-panel-multi">
+							<div class="chart-title">
+								<ul class="chart-tab">
+									<li class="active"><a href="#">图表 A</a></li>
+									<li><a href="#">图表 B</a></li>
+								</ul>
+							</div>
+							<div class="chart-div" id="" style="margin:10px;height:320px;">
+								<div class="chart-loader"><div class="loader"></div></div>
+							</div>
+						</div>
+					</div>
+					
+					<!-- 中间图表 -->
+					<div id="conCenter">
+						<!-- 统计指标 -->
+						<div class="indicator-panel" id="countIndicator">
+							<div class="indicator-div">
+								<div class="indicator indicator-1">
+									<p><span id="#">1024</span></p>
+									<p>指标</p>
+								</div>
+							</div>
+							<div class="indicator-div">
+								<div class="indicator indicator-2">
+									<p><span id="#">1024</span></p>
+									<p>指标</p>
+								</div>
+							</div>
+							<div class="indicator-div">
+								<div class="indicator indicator-3">
+									<p><span id="avgIncome">1024</span></p>
+									<p>指标</p>
+								</div>
+							</div>
+							<div class="indicator-div">
+								<div class="indicator indicator-4">
+									<p><span id="totalVillage">1024</span></p>
+									<p>指标</p>
+								</div>
+							</div>
+							<div class="indicator-div">
+								<div class="indicator indicator-5">
+									<p><span id="totalCommunity">1024</span></p>
+									<p>指标</p>
+								</div>
+							</div>
+						</div>
+						
+						<!-- 地图 -->
+						<div class="map-panel">
+							<div class="map-circle"></div>
+							<div class="map-circle-inner"></div>
+							<div class="map-div" id="mapDiv"></div>
+							<div class="map-legend" id="mapLegend">
+								<a class="point point-1 active">点位</a>
+								<a class="point point-2">点位</a>
+								<a class="point point-3">点位</a>
+								<a class="point point-4">点位</a>
+								<a class="point point-5">点位</a>
+							</div>
+						</div>
+					</div>
+					
+					<!-- 右侧图表 -->
+					<div id="conRight">
+						<div class="chart-panel">
+							<div class="chart-title">
+								<span class="title">图表标题</span>
+							</div>
+							<div class="chart-div">
+								<div class="chart-loader"><div class="loader"></div></div>
+							</div>
+						</div>
+						<div class="chart-panel chart-panel-multi">
+							<div class="chart-title">
+								<ul class="chart-tab">
+									<li class="active"><a href="#">图表 A</a></li>
+									<li><a href="#">图表 B</a></li>
+								</ul>
+							</div>
+							<div class="chart-div" id="" style="margin:10px;height:320px;">
+								<div class="chart-loader"><div class="loader"></div></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<!-- 右侧栏 -->
+			<div id="colRight">
+				<div class="panel-div">
+					<div class="panel-title">
+						<ul class="panel-tab">
+							<li class="active"><a href="#">Tab1</a></li>
+							<li><a href="#">Tab2</a></li>
+							<li><a href="#">Tab3</a></li>
+						</ul>
+					</div>
+					<div class="panel-con"></div>
+				</div>
+				<div class="panel-div">
+					<div class="panel-title">
+						<ul class="panel-tab">
+							<li class="active"><a href="#">Tab1</a></li>
+							<li><a href="#">Tab2</a></li>
+							<li><a href="#">Tab3</a></li>
+						</ul>
+					</div>
+					<div class="panel-con"></div>
+				</div>
+				<div class="panel-div">
+					<div class="panel-title">
+						<ul class="panel-tab">
+							<li class="active"><a href="#">Tab1</a></li>
+							<li><a href="#">Tab2</a></li>
+							<li><a href="#">Tab3</a></li>
+						</ul>
+					</div>
+					<div class="panel-con"></div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
